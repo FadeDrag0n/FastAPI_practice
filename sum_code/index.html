@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sum</title>
+</head>
+<body>
+    <input id="a" type="number" placeholder="Число 1">
+    <input id="b" type="number" placeholder="Число 2">
+    <button onclick="calculate()">Порахувати</button>
+    <h2 id="result"></h2>
+
+    <script>
+        async function calculate() {
+            const a = document.getElementById("a").value;
+            const b = document.getElementById("b").value;
+            const res = await fetch(`/sum?a=${a}&b=${b}`);
+            const data = await res.json();
+            document.getElementById("result").innerText = "Результат: " + data.result;
+        }
+    </script>
+</body>
+</html>
