@@ -5,20 +5,6 @@ from pydantic import BaseModel, Field, EmailStr, ConfigDict
 
 app = FastAPI()
 
-data = {
-    "email": "squ@gmail.com",
-    "bio": None,
-    "age": 12,
-}
-
-data2 = {
-    "email": "squ@gmail.com",
-    "bio": None,
-    "age": 12,
-    "gender": "male",
-    "birthday": 12,
-}
-
 class UserSchema(BaseModel):
     email: EmailStr
     bio: str | None = Field(max_length=1000)
