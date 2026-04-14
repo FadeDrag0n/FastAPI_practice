@@ -1,21 +1,31 @@
 import uvicorn
 from fastapi import FastAPI, HTTPException
+from pydantic import Field, BaseModel
 
 app = FastAPI()
 
 todolist = []
 
+class ToDoCreate(BaseModel):
+    name: str = Field(max_length=50)
+    description: str = Field(max_length=500)
+
+class ToDo(BaseModel):
+    id: int
+    name: str
+    description: str
+
 @app.post("/todos", tags=["Todos"], summary="Create New Todo")
-def create_todo(name: str, description: str) -> dict:
-    todolist.append({"id": len(todolist)+1, "name": name, "description": description})
+def create_todo(to_do_create: ToDoCreate) -> dict:
+    todolist.append({"id": len(todolist)+1, **to_do_create.model_dump()})
     return {"success": True}
 
 
 
 
 
-@app.get("/todos", tags=["Todos"], summary="Get Todos")
-def get_todos() -> list[dict]:
+@app.get("/todos", tags=["Todos"], summary="Get Todos", response_model=list[ToDo])
+def get_todos() -> list[ToDo]:
     return todolist
 
 @app.delete("/todos/{id_}", tags=["Todos"], summary="Remove Todo")
